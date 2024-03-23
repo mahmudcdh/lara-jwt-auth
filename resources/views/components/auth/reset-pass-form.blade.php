@@ -26,14 +26,14 @@
             errorToast("Password and Confirm Password doesn't match");
         }else{
             showLoader();
-            let res = await axios.post('/reset-password', {password: password});
+            let res = await axios.post('/reset-password', {'password': password});
             hideLoader();
 
             if(res.status === 200 && res.data['status'] === 'success'){
                 successToast(res.data['message']);
                 setTimeout(() => {
                     window.location.href = '/login';
-                },1000);
+                }, 2000);
             }else{
                 errorToast(res.data['message']);
             }

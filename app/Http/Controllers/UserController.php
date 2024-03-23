@@ -14,6 +14,8 @@ use Mockery\Generator\StringManipulation\Pass\Pass;
 
 class UserController extends Controller
 {
+
+    // API Requests
     public function userRegistration(Request $request) {
 
         try{
@@ -127,7 +129,7 @@ class UserController extends Controller
                 $user->update(['otp' => '0']);
 
                 //Issue Token for User Reset Password
-                $token = JWToken::createTokenForResetPassword($user);
+                $token = JWToken::createTokenForResetPassword($email);
                 return response()->json([
                     'status' => 'success',
                     'message' => 'OTP Verified Successfully..!',
@@ -137,13 +139,13 @@ class UserController extends Controller
                 return response()->json([
                     'status' => 'error',
                     'message' => 'OTP Expired..!'
-                ]);
+                ], 500);
             }
         }else{
             return response()->json([
                 'status' => 'error',
                 'message' => 'Invalid OTP..!'
-            ]);
+            ], 500);
         }
     }
 
@@ -169,6 +171,74 @@ class UserController extends Controller
 
     }
 
+    public function userProfile(Request $request) {
+
+        $user = User::where('id', $request->header('id'))->first();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User Profile Retrieved Successfully..!',
+            'data' => $user
+        ], 200);
+
+    }
+
+    public function userProfileUpdate(Request $request) {
+
+        $request->validate([
+            'firstName' => ['required', 'string', 'max:50'],
+            'lastName' => ['required', 'string', 'max:50'],
+            'mobile' => ['required', 'string', 'max:12'],
+        ]);
+
+        try{
+            $user = User::where('id', $request->header('id'))->first();
+
+            $user->update([
+                'firstName' => $request->input('firstName'),
+                'lastName' => $request->input('lastName'),
+                'mobile' => $request->input('mobile'),
+            ]);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'User Profile Updated Successfully..!'
+            ], 200);
+        }
+        catch(Exception $e){
+            return response()->json([
+                    'status' => 'error',
+                    'message' => 'User Profile Update failed..!'
+                ], 500);
+        }
+
+
+    }
+
+    public function updateUserPassword(Request $request) {
+
+        try{
+
+            $user = User::where('id', $request->header('id'))->first();
+
+            $user->update([
+                'password' => Hash::make($request->input('password'))
+            ]);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Password Updated Successfully..!'
+            ], 200);
+        }
+        catch(Exception $e){
+            return response()->json([
+                    'status' => 'error',
+                    'message' => 'Password Update failed..!'
+                ], 500);
+        }
+    }
+
+    // Pages Function
     public function loginPage(){
         return view('pages.auth.login-page');
     }
@@ -187,6 +257,10 @@ class UserController extends Controller
 
     public function verifyOtpPage(){
         return view('pages.auth.verify-otp-page');
+    }
+
+    public function profilePage(){
+        return view('pages.dashboard.profile-page');
     }
 
 }

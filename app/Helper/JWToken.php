@@ -54,7 +54,7 @@ class JWToken
           'iat' => time(),
           'exp' => time() + 600, // 10 minutes
           'email' => $email,
-          'id' => '0'
+          'id' => 0
         ];
 
         return JWT::encode($payload, $key, 'HS256');

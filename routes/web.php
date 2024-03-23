@@ -38,6 +38,10 @@ Route::get('/verify-otp', [UserController::class, 'verifyOtpPage'])->name('verif
 
 // User Dashboard
 Route::get('/dashboard', [DashboardController::class, 'dashboard'])->middleware(TokenVerifyMiddleware::class)->name('dashboard');
+Route::get('/profile-page', [UserController::class, 'profilePage'])->middleware(TokenVerifyMiddleware::class)->name('profilePage');
+Route::get('/userProfile', [UserController::class, 'userProfile'])->middleware(TokenVerifyMiddleware::class)->name('userProfile');
+Route::post('/updateUserProfile', [UserController::class, 'userProfileUpdate'])->middleware(TokenVerifyMiddleware::class)->name('updateUserProfile');
+Route::post('/updateUserPassword', [UserController::class, 'updateUserPassword'])->middleware(TokenVerifyMiddleware::class)->name('updateUserPassword');
 
 
 

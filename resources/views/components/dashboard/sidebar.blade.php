@@ -53,6 +53,9 @@
                     <li class="mb-4">
                         <a href="" class="text-gray-300 text-sm flex items-center hover:text-gray-100 before:contents-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3">User List</a>
                     </li>
+                    <li class="mb-4">
+                        <a href="{{ route('profilePage') }}" class="text-gray-300 text-sm flex items-center hover:text-gray-100 before:contents-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3">User Profile</a>
+                    </li>
                 </ul>
             </li>
             <li class="mb-1 group">
